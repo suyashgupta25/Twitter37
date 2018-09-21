@@ -12,6 +12,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //Server URL added here so that it is configurable at build level and can separated
+        //based on bebug and release mode: Lets say Debug to dev server and Release to Prod
+        buildConfigField "String", "BASE_URL", "\"https://developer.twitter.com/\""
     }
     buildTypes {
         release {
