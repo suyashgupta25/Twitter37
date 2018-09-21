@@ -3,6 +3,7 @@ package com.tretton37.twitter37.di
 import com.squareup.moshi.Moshi
 import com.tretton37.twitter37.BaseApp
 import com.tretton37.twitter37.BuildConfig
+import com.tretton37.twitter37.data.webservice.TwitterService
 import com.tretton37.twitter37.utils.AppConstants.Companion.CONNECTION_TIMEOUT
 import com.tretton37.twitter37.utils.AppConstants.Companion.READ_TIMEOUT
 import com.tretton37.twitter37.utils.AppConstants.Companion.WRITE_TIMEOUT
@@ -52,5 +53,10 @@ open class NetworkModule {
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
+
+    @Provides
+    @Singleton
+    fun provideLastFMService(retrofit: Retrofit): TwitterService =
+            retrofit.create(TwitterService::class.java)
 
 }
