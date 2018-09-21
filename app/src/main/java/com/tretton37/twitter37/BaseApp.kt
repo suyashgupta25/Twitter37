@@ -22,5 +22,4 @@ open class BaseApp : DaggerApplication() {
 
     protected open fun networkModule(): NetworkModule = NetworkModule()
 
-
 }
