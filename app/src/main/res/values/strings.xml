@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Twitter37</string>
+
+    <string name="retry">Retry</string>
+    <string name="search_bar_title">Search..</string>
 </resources>
