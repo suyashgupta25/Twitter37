@@ -27,7 +27,6 @@
             android:name=".ui.image.ImageActivity"
             android:screenOrientation="portrait" />
 
-
         <provider
             android:name=".data.db.HistoryProvider"
             android:authorities="com.tretton37.twitter37.searchhistorydatabase"

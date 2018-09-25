@@ -31,13 +31,14 @@
                 android:id="@+id/imv_tweet"
                 android:layout_width="@dimen/list_icon_size"
                 android:layout_height="@dimen/list_icon_size"
+                android:contentDescription="@string/app_name"
                 app:glideBannerImageUri="@{viewModel.url}" />
 
             <TextView
                 android:id="@+id/tv_tweet_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/horizontal_margin"
+                android:layout_marginStart="@dimen/horizontal_margin"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="@{viewModel.text}"
@@ -55,8 +56,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_retweet"
                 android:drawablePadding="@dimen/margin_4"
+                android:drawableStart="@drawable/ic_retweet"
                 android:gravity="center_vertical"
                 android:text="@{viewModel.retweetCount}"
                 android:textSize="@dimen/list_item_text_size" />
@@ -66,8 +67,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_favorite"
                 android:drawablePadding="@dimen/margin_4"
+                android:drawableStart="@drawable/ic_favorite"
                 android:gravity="center_vertical"
                 android:text="@{viewModel.favoriteCount}"
                 android:textSize="@dimen/list_item_text_size" />
@@ -77,8 +78,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:drawableLeft="@drawable/ic_date"
                 android:drawablePadding="@dimen/margin_4"
+                android:drawableStart="@drawable/ic_date"
                 android:gravity="center_vertical"
                 android:text="@{viewModel.date}"
                 android:textSize="@dimen/list_item_text_size" />

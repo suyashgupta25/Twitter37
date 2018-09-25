@@ -6,6 +6,8 @@
 
     <string name="cd_suggestion_icon">List item icon</string>
     <string name="cd_up_button">Up navigation button</string>
-    <string name="cd_voice_search">Voice search</string>
     <string name="cd_clear_button">Clear field</string>
+
+    <string name="param_image_details">paramImageDetails</string>
+
 </resources>

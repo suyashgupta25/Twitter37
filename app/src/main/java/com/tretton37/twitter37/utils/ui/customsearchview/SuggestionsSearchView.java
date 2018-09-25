@@ -334,7 +334,7 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
      * @param view The view to attach the keyboard to.
      */
     private void showKeyboard(View view) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1 && view.hasFocus()) {
+        if (view.hasFocus()) {
             view.clearFocus();
         }
 
@@ -565,13 +565,7 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
      */
     @Override
     public void setBackground(Drawable background) {
-        // Method changed in jelly bean for setting background.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mTintView.setBackground(background);
-        } else {
-            //noinspection deprecation
-            mTintView.setBackgroundDrawable(background);
-        }
+        mTintView.setBackground(background);
     }
 
     /**

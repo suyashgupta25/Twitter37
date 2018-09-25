@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedList
 import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -15,6 +16,7 @@ import com.tretton37.twitter37.R
 import com.tretton37.twitter37.data.webservice.NetworkState
 import com.tretton37.twitter37.databinding.FragmentTweetsBinding
 import com.tretton37.twitter37.ui.common.listeners.ListItemClickListener
+import com.tretton37.twitter37.ui.image.ImageActivity
 import com.twitter.sdk.android.core.models.Tweet
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -39,18 +41,6 @@ class TweetsFragment : Fragment(), ListItemClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_tweets, container, false)
-//        val toolbar = inflate.findViewById<Toolbar>(R.id.toolbar)
-//        toolbar.setOnMenuItemClickListener {
-//            onOptionsItemSelected(it)
-//        }
-//        //set toolbar appearance
-//        toolbar.setBackgroundResource(R.color.colorPrimary)
-//
-//        //for crate home button
-//        val activity = activity as AppCompatActivity?
-//        activity!!.setSupportActionBar(toolbar)
-//        activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-//        return inflate
     }
 
 
@@ -98,8 +88,13 @@ class TweetsFragment : Fragment(), ListItemClickListener {
         }
     }
 
-    override fun onClick(view: View, position: Int) {
-
+    override fun onImageClick(view: View, position: Int) {
+        val mediaUrl = viewModel.tweetsList.value?.get(position)?.entities?.media?.firstOrNull()?.mediaUrl
+        mediaUrl?.let {
+            val imagePage = Intent(activity, ImageActivity::class.java)
+            imagePage.putExtra(getString(R.string.param_image_details), it)
+            startActivity(imagePage)
+        }
     }
 
     override fun onRetryClick(position: Int) {

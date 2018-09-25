@@ -11,6 +11,8 @@ import com.tretton37.twitter37.databinding.ItemTwitterListBinding
 import com.tretton37.twitter37.ui.common.base.BaseHolder
 import com.tretton37.twitter37.ui.common.listeners.ListItemClickListener
 import com.tretton37.twitter37.ui.common.viewmodels.ItemNetworkStateViewModel
+import com.tretton37.twitter37.utils.AppConstants.Companion.ONE
+import com.tretton37.twitter37.utils.AppConstants.Companion.ZERO
 import com.twitter.sdk.android.core.models.Tweet
 
 class TweetsAdapter(val itemClickListener: ListItemClickListener) : PagedListAdapter<Tweet, BaseHolder>(TweetsAdapter.DIFF_CALLBACK) {
@@ -62,23 +64,23 @@ class TweetsAdapter(val itemClickListener: ListItemClickListener) : PagedListAda
             if (previousExtraRow) {
                 notifyItemRemoved(previousItemCount)
             } else {
-                notifyItemInserted(previousItemCount + 1)
+                notifyItemInserted(previousItemCount + ONE)
             }
         } else if (newExtraRow && previousState != newNetworkState) {
-            notifyItemChanged(previousItemCount - 1)
+            notifyItemChanged(previousItemCount - ONE)
         }
     }
 
     override fun getItemCount(): Int {
-        return super.getItemCount() + if (hasExtraRow()) 1 else 0
+        return super.getItemCount() + if (hasExtraRow()) ONE else ZERO
     }
 
     inner class TwitterItemViewHolder(binding: ItemTwitterListBinding, itemClickListener: ListItemClickListener) : BaseHolder(binding.root) {
         private val binding: ItemTwitterListBinding
 
         init {
-            itemView.setOnClickListener {
-                itemClickListener.onClick(it, adapterPosition)
+            binding.imvTweet.setOnClickListener {
+                itemClickListener.onImageClick(it, adapterPosition)
             }
             this.binding = binding
         }
@@ -103,17 +105,17 @@ class TweetsAdapter(val itemClickListener: ListItemClickListener) : PagedListAda
             val networkStateObj = this@TweetsAdapter.networkState
             val itemNetworkStateViewModel = ItemNetworkStateViewModel(networkStateObj)
             binding.viewModel = itemNetworkStateViewModel
-            binding.retryButton.setOnClickListener { view -> clickListener.onRetryClick(adapterPosition) }
+            binding.retryButton.setOnClickListener { _ -> clickListener.onRetryClick(adapterPosition) }
         }
     }
 
     companion object {
         var DIFF_CALLBACK: DiffUtil.ItemCallback<Tweet> = object : DiffUtil.ItemCallback<Tweet>() {
             override fun areItemsTheSame(oldItem: Tweet, newItem: Tweet): Boolean {
-                return if (oldItem.id == null || oldItem.id == 0L)
+                return if (oldItem.id == ZERO.toLong())
                     oldItem.idStr.equals(newItem.idStr)
                 else
-                    oldItem.id === newItem.id
+                    oldItem.id.equals(newItem.id)
             }
 
             override fun areContentsTheSame(oldItem: Tweet, newItem: Tweet): Boolean {

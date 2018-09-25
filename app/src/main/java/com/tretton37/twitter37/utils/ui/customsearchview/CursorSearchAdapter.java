@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.tretton37.twitter37.R;
 import com.tretton37.twitter37.data.db.HistoryContract;
 
+import static com.tretton37.twitter37.utils.AppConstants.EMPTY;
 import static com.tretton37.twitter37.utils.AppConstants.ZERO;
 
 /**
@@ -27,7 +28,7 @@ public class CursorSearchAdapter extends CursorAdapter {
     private int suggestionIcon = R.drawable.ic_action_search_white;
 
     public CursorSearchAdapter(Context context, Cursor cursor, int flags) {
-        super(context, cursor, 0);
+        super(context, cursor, ZERO);
     }
 
     public void setTextColor(int color) {
@@ -69,7 +70,7 @@ public class CursorSearchAdapter extends CursorAdapter {
 
     @Override
     public Object getItem(int position) {
-        String retString = "";
+        String retString = EMPTY;
 
         // Move to position, get query
         Cursor cursor = getCursor();

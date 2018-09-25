@@ -27,7 +27,7 @@ class TweetsDataSource internal constructor(private val query: String, private v
 
     override fun loadInitial(params: PageKeyedDataSource.LoadInitialParams<Long>, callback: PageKeyedDataSource.LoadInitialCallback<Long, Tweet>) {
         loadTweets(null, params.requestedLoadSize) {
-            if(it.isNotEmpty()) {
+            if (it.isNotEmpty()) {
                 callback.onResult(it, null, it.get(it.lastIndex).id)
             } else {
                 callback.onResult(it, null, null)
@@ -65,7 +65,7 @@ class TweetsDataSource internal constructor(private val query: String, private v
                 if (response.isSuccessful && response.code() == HTTP_OK) {
                     val tweets = response.body()
                     if (tweets != null) {
-                        Log.e("Success:", tweets.size.toString())
+                        Log.d(TAG, "Success:" + tweets.size.toString())
                         postLoadedData(tweets, callback)
                     } else {
                         postNetworkError(response.message())
@@ -93,7 +93,7 @@ class TweetsDataSource internal constructor(private val query: String, private v
                     val tweets = search?.tweets
                     if (tweets != null) {
                         if (query.isNotEmpty() && tweets.isEmpty()) {
-                            postNetworkError("No results found for '"+query+"'")
+                            postNetworkError("No results found for '" + query + "'")
                             return
                         }
                         Log.d(TAG, "Success:" + tweets.size.toString())
@@ -120,7 +120,7 @@ class TweetsDataSource internal constructor(private val query: String, private v
     }
 
     private fun postNetworkError(errorMessage: String?) {
-        Log.e(TAG + ": API CALL", errorMessage)
+        Log.e(TAG, "API CALL:" + errorMessage)
         mNetworkState.postValue(NetworkState(Status.FAILED, errorMessage ?: "Unknown error"))
     }
 

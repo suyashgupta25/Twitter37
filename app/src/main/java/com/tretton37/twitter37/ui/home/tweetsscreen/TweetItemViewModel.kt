@@ -18,7 +18,7 @@ class TweetItemViewModel(tweet: Tweet?) {
         retweetCount.set(tweet?.retweetCount.toString())
         favoriteCount.set(tweet?.favoriteCount.toString())
         com.tretton37.twitter37.utils.DateUtils
-        date.set(DateUtils.formatDateString(tweet!!.createdAt))
+        tweet?.let { date.set(DateUtils.formatDateString(it.createdAt)) }
         val mediaUrl = tweet?.entities?.media?.firstOrNull()?.mediaUrl
         mediaUrl?.let { url.set(mediaUrl) }
     }

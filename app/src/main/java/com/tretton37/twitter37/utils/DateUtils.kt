@@ -12,7 +12,7 @@ object DateUtils {
     private val dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
 
     fun formatDateString(dateValue: String): String {
-        val date = SimpleDateFormat(dateFormat).parse(dateValue)
+        val date = SimpleDateFormat(dateFormat, Locale.getDefault()).parse(dateValue)
         val now = Date()
         val diff = now.time - date.time
 

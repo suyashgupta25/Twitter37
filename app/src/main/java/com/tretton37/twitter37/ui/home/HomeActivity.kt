@@ -32,16 +32,16 @@ class HomeActivity : BaseActivity(), SuggestionsSearchView.OnQueryTextListener,
         super.onCreate(savedInstanceState)
         fragmentContainerId = binding.flHomeContent.id
         replaceFragment(fragmentContainerId, ::TweetsFragment, TweetsFragment.TAG)
-        suggestionsSearchView = binding?.ssvTweets
+        suggestionsSearchView = binding.ssvTweets
         suggestionsSearchView?.setOnQueryTextListener(this)
         suggestionsSearchView?.setSearchViewListener(this)
         suggestionsSearchView?.setOnItemClickListener(this)
-        setSupportActionBar(binding?.toolbar)
+        setSupportActionBar(binding.toolbar)
     }
 
     override fun onResume() {
         super.onResume()
-        binding?.ssvTweets?.activityResumed();
+        binding.ssvTweets.activityResumed();
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -49,7 +49,7 @@ class HomeActivity : BaseActivity(), SuggestionsSearchView.OnQueryTextListener,
         when (id) {
             R.id.action_search -> {
                 // Open the search view on the menu item click.
-                binding?.ssvTweets?.openSearch()
+                binding.ssvTweets.openSearch()
                 return true
             }
         }
@@ -100,5 +100,4 @@ class HomeActivity : BaseActivity(), SuggestionsSearchView.OnQueryTextListener,
             super.onBackPressed()
         }
     }
-
 }
