@@ -4,4 +4,19 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorSelectedListItem">#ff4d76</color>
+
+    <color name="search_layover_bg">#0000ffff</color>
+    <color name="search_field_bg">@color/gray</color>
+
+    <color name="trans_gray">#dd888888</color>
+    <color name="gray">#ff888888</color>
+    <color name="white_ish">#fffefefe</color>
+    <color name="black">#ff000000</color>
+    <color name="gray_50">#88888888</color>
+
+    <color name="black_effective">#2a2a2a</color>
+    <color name="bg_color">#f7f7f7</color>
+    <color name="dark_gray">#696969</color>
+    <color name="light_gray">#dbdbdb</color>
+
 </resources>

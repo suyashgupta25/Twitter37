@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/vertical_margin"
         android:layout_marginTop="@dimen/vertical_margin"
         android:background="@drawable/list_item_background"
         android:orientation="vertical"
@@ -46,7 +47,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/margin_12"
             android:orientation="horizontal">
 
             <TextView

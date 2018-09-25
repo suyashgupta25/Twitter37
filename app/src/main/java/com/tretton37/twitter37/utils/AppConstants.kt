@@ -5,6 +5,8 @@ class AppConstants {
     companion object {
         //Text Utils
         const val EMPTY = ""
+        const val ZERO = 0
+        const val ONE = 1
 
         //Network settings
         const val EXECUTOR_THREADS = 5

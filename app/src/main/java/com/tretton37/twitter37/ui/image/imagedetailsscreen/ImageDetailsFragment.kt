@@ -1,4 +1,4 @@
-package com.tretton37.twitter37.ui.home.imagedetailsscreen
+package com.tretton37.twitter37.ui.image.imagedetailsscreen
 
 import android.support.v4.app.Fragment
 

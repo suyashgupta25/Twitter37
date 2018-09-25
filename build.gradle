@@ -38,20 +38,13 @@ ext {
     // App dependencies
     supportLibraryVersion = '28.0.0-rc02'
     constraint_layout = '1.1.2'
-
     kotlin_version = '1.2.30'
     lifecycle = '1.1.0'
-
     common_annotations = '1.3.2'
-
     dagger2Version = '2.16'
-
     okhttp = '3.10.0'
-
     twittersdk = '3.3.0'
-
     glide = '4.7.1'
-
 
     // Test dependencies
     junitVersion = '4.12'

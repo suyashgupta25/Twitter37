@@ -27,7 +27,11 @@ class TweetsDataSource internal constructor(private val query: String, private v
 
     override fun loadInitial(params: PageKeyedDataSource.LoadInitialParams<Long>, callback: PageKeyedDataSource.LoadInitialCallback<Long, Tweet>) {
         loadTweets(null, params.requestedLoadSize) {
-            callback.onResult(it, null, it.get(it.lastIndex).id)
+            if(it.isNotEmpty()) {
+                callback.onResult(it, null, it.get(it.lastIndex).id)
+            } else {
+                callback.onResult(it, null, null)
+            }
         }
     }
 
@@ -82,13 +86,16 @@ class TweetsDataSource internal constructor(private val query: String, private v
     private fun searchTweets(query: String, maxId: Long?, pageSize: Int, callback: TweetsLoadedCallback) {
         val searchTimeline = searchService.tweets(query, null, USER_LANGUAGE, USER_LANGUAGE,
                 SEARCH_RESULT_TYPE, pageSize, null, null, maxId, true)
-
         searchTimeline.enqueue(object : Callback<Search> {
             override fun onResponse(call: Call<Search>, response: Response<Search>) {
                 if (response.isSuccessful && response.code() == HTTP_OK) {
                     val search = response.body()
                     val tweets = search?.tweets
                     if (tweets != null) {
+                        if (query.isNotEmpty() && tweets.isEmpty()) {
+                            postNetworkError("No results found for '"+query+"'")
+                            return
+                        }
                         Log.d(TAG, "Success:" + tweets.size.toString())
                         postLoadedData(tweets, callback)
                     } else {

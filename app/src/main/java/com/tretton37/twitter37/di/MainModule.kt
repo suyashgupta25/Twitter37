@@ -1,7 +1,7 @@
 package com.tretton37.twitter37.di
 
-import com.tretton37.twitter37.ui.home.imagedetailsscreen.ImageDetailsFragment
 import com.tretton37.twitter37.ui.home.tweetsscreen.TweetsFragment
+import com.tretton37.twitter37.ui.image.imagedetailsscreen.ImageDetailsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

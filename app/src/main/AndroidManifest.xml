@@ -22,5 +22,17 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name=".ui.image.ImageActivity"
+            android:screenOrientation="portrait" />
+
+
+        <provider
+            android:name=".data.db.HistoryProvider"
+            android:authorities="com.tretton37.twitter37.searchhistorydatabase"
+            android:exported="false"
+            android:protectionLevel="signature"
+            android:syncable="true" />
     </application>
 </manifest>
