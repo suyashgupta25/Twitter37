@@ -33,5 +33,10 @@
             android:exported="false"
             android:protectionLevel="signature"
             android:syncable="true" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="fca5f1a73f6aead08d8fbe7f69d4cc4e7ca151d2" />
+
     </application>
 </manifest>

@@ -1,10 +1,12 @@
 package com.tretton37.twitter37
 
 import android.content.Context
+import com.crashlytics.android.Crashlytics
 import com.tretton37.twitter37.di.DaggerAppComponent
 import com.tretton37.twitter37.di.NetworkModule
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
+import io.fabric.sdk.android.Fabric
 
 open class BaseApp : DaggerApplication() {
 
@@ -16,6 +18,11 @@ open class BaseApp : DaggerApplication() {
                 .application(this)
                 .network(networkModule())
                 .build()
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        Fabric.with(this, Crashlytics())
     }
 
     public override fun applicationInjector(): AndroidInjector<out DaggerApplication> = androidInjector
