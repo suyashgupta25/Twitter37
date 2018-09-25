@@ -7,21 +7,26 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.tretton37.twitter37"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary true
 
         //Server URL added here so that it is configurable at build level and can separated
         //based on bebug and release mode: Lets say Debug to dev server and Release to Prod
-        buildConfigField "String", "BASE_URL", "\"https://api.twitter.com/\""
+        buildConfigField "String", "CONSUMER_API_KEY", "\"LbDyzsaN9y8UIHWaww9k2TRL9\""
+        buildConfigField "String", "CONSUMER_API_SECRET", "\"75jUMNRjRYI9MQl10er11VqjfHl0BmUD93IjHgJA1yMGUyJ7Qg\""
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    dataBinding {
+        enabled = true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -35,7 +40,6 @@ dependencies {
     // Support Libs
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:design:$rootProject.supportLibraryVersion"
     implementation "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraint_layout"
@@ -60,23 +64,15 @@ dependencies {
 
     // Networking
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttp"
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit"
-    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.interceptor"
-
-    // JSON Parsing
-    implementation "se.ansman.kotshi:api:$rootProject.kotshi"
-    implementation "com.squareup.retrofit2:converter-moshi:$rootProject.converter_moshi"
-    kapt "se.ansman.kotshi:compiler:$rootProject.kotshi"
 
     //Image loading and caching
     implementation "com.github.bumptech.glide:glide:$rootProject.glide"
     kapt "com.github.bumptech.glide:compiler:$rootProject.glide"
 
-    // FRP
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"
-    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
-    implementation "io.reactivex.rxjava2:rxkotlin:$rootProject.rxkotlin"
+    //Twitter native sdk which has RETROFIT in it
+    implementation("com.twitter.sdk.android:twitter:$rootProject.twittersdk@aar") {
+        transitive = true
+    }
 
     testImplementation "junit:junit:$rootProject.junitVersion"
 

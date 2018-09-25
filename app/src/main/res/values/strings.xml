@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Twitter37</string>
+
+    <string name="retry">Retry</string>
+    <string name="search_bar_title">Search&#8230;</string>
+
+    <string name="cd_suggestion_icon">List item icon</string>
+    <string name="cd_up_button">Up navigation button</string>
+    <string name="cd_voice_search">Voice search</string>
+    <string name="cd_clear_button">Clear field</string>
 </resources>
