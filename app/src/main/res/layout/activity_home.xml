@@ -12,7 +12,7 @@
             style="@style/Toolbar"
             android:background="@color/colorPrimary"
             app:subtitleTextColor="@android:color/white"
-            app:title="@string/app_name"
+            app:title="@string/toolbar_title"
             app:titleTextAppearance="@style/Toolbar.TitleText"
             app:titleTextColor="@android:color/white" />
 
@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/toolbar" />
 
-        <com.tretton37.twitter37.utils.ui.customsearchview.SuggestionsSearchView
+        <com.tretton37.twitter37.ui.home.tweetsscreen.customsearchview.SuggestionsSearchView
             android:id="@+id/ssv_tweets"
             style="@style/MaterialSearchViewStyle"
             android:layout_width="match_parent"

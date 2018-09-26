@@ -20,7 +20,8 @@ import retrofit2.Response
 
 private typealias TweetsLoadedCallback = (List<Tweet>) -> Unit
 
-class TweetsDataSource internal constructor(private val query: String, private val statusesService: StatusesService, private val searchService: SearchService) : PageKeyedDataSource<Long, Tweet>() {
+class TweetsDataSource internal constructor(private val query: String, private val statusesService: StatusesService,
+                                            private val searchService: SearchService) : PageKeyedDataSource<Long, Tweet>() {
     private val mNetworkState: MutableLiveData<NetworkState> = MutableLiveData()
     val networkState: LiveData<NetworkState>
         get() = mNetworkState

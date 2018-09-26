@@ -1,8 +1,7 @@
-package com.tretton37.twitter37.utils.ui.customsearchview;
+package com.tretton37.twitter37.ui.home.tweetsscreen.customsearchview;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -36,20 +35,22 @@ import android.widget.TextView;
 
 import com.tretton37.twitter37.R;
 import com.tretton37.twitter37.data.db.HistoryContract;
+import com.tretton37.twitter37.data.db.HistorySource;
+import com.tretton37.twitter37.ui.home.tweetsscreen.customsearchview.listeners.OnSuggestionsQueryTextListener;
+import com.tretton37.twitter37.ui.home.tweetsscreen.customsearchview.listeners.SuggestionsSearchViewListener;
 
 import static com.tretton37.twitter37.utils.AppConstants.EMPTY;
 import static com.tretton37.twitter37.utils.AppConstants.ZERO;
 
+//import com.tretton37.twitter37.data.db.HistoryContract;
+
 /**
  * Created by suyashg
  */
-public class SuggestionsSearchView extends FrameLayout implements FilterQueryProvider, TextWatcher {
+public class SuggestionsSearchView extends FrameLayout implements FilterQueryProvider, TextWatcher,
+        View.OnClickListener, AdapterView.OnItemClickListener, EditText.OnEditorActionListener,
+        EditText.OnFocusChangeListener{
     //region Properties
-    /**
-     * Number of suggestions to show.
-     */
-    private static int MAX_HISTORY = 10;
-
     /**
      * Whether or not the search view is open right now.
      */
@@ -128,12 +129,17 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
     /**
      * Listener for when the query text is submitted or changed.
      */
-    private OnQueryTextListener mOnQueryTextListener;
+    private OnSuggestionsQueryTextListener mOnSuggestionsQueryTextListener;
 
     /**
      * Listener for when the search view opens and closes.
      */
-    private SearchViewListener mSearchViewListener;
+    private SuggestionsSearchViewListener mSuggestionsSearchViewListener;
+
+    /**
+     * COntract which provides data access
+     */
+    private HistorySource mHistorySource;
 
     //endregion
 
@@ -181,34 +187,33 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
         mSuggestionsListView = mRoot.findViewById(R.id.suggestion_list);
 
         // Set click listeners
-        mBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeSearch();
-            }
-        });
-
-        mClear.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSearchEditText.setText(EMPTY);
-            }
-        });
+        mBack.setOnClickListener(this);
+        mClear.setOnClickListener(this);
 
         // Initialize the search view.
         initSearchView();
-
-        mAdapter = new CursorSearchAdapter(mContext, getHistoryCursor(), ZERO);
+        mHistorySource = new HistoryContract(mContext.getContentResolver());
+        mAdapter = new CursorSearchAdapter(mContext,
+                mHistorySource.getHistoryCursor(), ZERO);
         mAdapter.setFilterQueryProvider(this);
         mSuggestionsListView.setAdapter(mAdapter);
         mSuggestionsListView.setTextFilterEnabled(true);
-        mSuggestionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String suggestion = getSuggestionAtPosition(position);
-                setQuery(suggestion, true);
-            }
-        });
+        mSuggestionsListView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == mBack.getId()) {
+            closeSearch();
+        } else if (v.getId() == mClear.getId()) {
+            mSearchEditText.setText(EMPTY);
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String suggestion = getSuggestionAtPosition(position);
+        setQuery(suggestion, true);
     }
 
     /**
@@ -302,27 +307,24 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
      * Preforms necessary initializations on the SearchView.
      */
     private void initSearchView() {
-        mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                // When an edit occurs, submit the query.
-                onSubmitQuery();
-                return true;
-            }
-        });
-
+        mSearchEditText.setOnEditorActionListener(this);
         mSearchEditText.addTextChangedListener(this);
+        mSearchEditText.setOnFocusChangeListener(this);
+    }
 
-        mSearchEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                // If we gain focus, show keyboard and show suggestions.
-                if (hasFocus) {
-                    showKeyboard(mSearchEditText);
-                    showSuggestions();
-                }
-            }
-        });
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        // If we gain focus, show keyboard and show suggestions.
+        if (hasFocus) {
+            showKeyboard(mSearchEditText);
+            showSuggestions();
+        }
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        onSubmitQuery();
+        return true;
     }
     //endregion
 
@@ -391,13 +393,12 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
             } else {
                 AnimationUtils.fadeInView(mRoot);
             }
-
         } else {
             mRoot.setVisibility(View.VISIBLE);
         }
 
-        if (mSearchViewListener != null) {
-            mSearchViewListener.onSearchViewOpened();
+        if (mSuggestionsSearchViewListener != null) {
+            mSuggestionsSearchViewListener.onSearchViewOpened();
         }
         mOpen = true;
     }
@@ -461,8 +462,8 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
         }
 
         // Call listener if we have one
-        if (mSearchViewListener != null) {
-            mSearchViewListener.onSearchViewClosed();
+        if (mSuggestionsSearchViewListener != null) {
+            mSuggestionsSearchViewListener.onSearchViewClosed();
         }
         mOpen = false;
     }
@@ -487,8 +488,8 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
         }
 
         // If we have a query listener and the text has changed, call it.
-        if (mOnQueryTextListener != null) {
-            mOnQueryTextListener.onQueryTextChange(newText.toString());
+        if (mOnSuggestionsQueryTextListener != null) {
+            mOnSuggestionsQueryTextListener.onQueryTextChange(newText.toString());
         }
     }
 
@@ -503,10 +504,10 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
         if (query != null) {
 
             // If we don't have a listener, or if the search view handled the query, close it.
-            if (mOnQueryTextListener == null || !mOnQueryTextListener.onQueryTextSubmit(query.toString())) {
+            if (mOnSuggestionsQueryTextListener == null || !mOnSuggestionsQueryTextListener.onQueryTextSubmit(query.toString())) {
 
                 if (mShouldKeepHistory) {
-                    saveQueryToDb(query.toString(), System.currentTimeMillis());
+                    mHistorySource.saveQueryToDb(query.toString(), System.currentTimeMillis());
                 }
 
                 // Refresh the cursor on the adapter,
@@ -522,12 +523,12 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
     //endregion
 
     //region Mutators
-    public void setOnQueryTextListener(OnQueryTextListener mOnQueryTextListener) {
-        this.mOnQueryTextListener = mOnQueryTextListener;
+    public void setOnQueryTextListener(OnSuggestionsQueryTextListener mOnSuggestionsQueryTextListener) {
+        this.mOnSuggestionsQueryTextListener = mOnSuggestionsQueryTextListener;
     }
 
-    public void setSearchViewListener(SearchViewListener mSearchViewListener) {
-        this.mSearchViewListener = mSearchViewListener;
+    public void setSearchViewListener(SuggestionsSearchViewListener mSuggestionsSearchViewListener) {
+        this.mSuggestionsSearchViewListener = mSuggestionsSearchViewListener;
     }
 
     /**
@@ -757,84 +758,19 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
 
     //----- Lifecycle methods -----//
 
-//    public void activityPaused() {
-//        Cursor cursor = ((CursorAdapter)mAdapter).getCursor();
-//        if (cursor != null && !cursor.isClosed()) {
-//            cursor.close();
-//        }
-//    }
-
     public void activityResumed() {
         refreshAdapterCursor();
     }
     //endregion
 
-    //region Database Methods
-
-    /**
-     * Save a query to the local database.
-     *
-     * @param query - The query to be saved. Can't be empty or null.
-     * @param ms    - The insert date, in millis. As a suggestion, use System.currentTimeMillis();
-     **/
-    public synchronized void saveQueryToDb(String query, long ms) {
-        if (!TextUtils.isEmpty(query) && ms > ZERO) {
-            ContentValues values = new ContentValues();
-
-            values.put(HistoryContract.HistoryEntry.COLUMN_QUERY, query);
-            values.put(HistoryContract.HistoryEntry.COLUMN_INSERT_DATE, ms);
-            values.put(HistoryContract.HistoryEntry.COLUMN_IS_HISTORY, 1); // Saving as history.
-
-            mContext.getContentResolver().insert(HistoryContract.HistoryEntry.CONTENT_URI, values);
-        }
-    }
-
-    private Cursor getHistoryCursor() {
-        return mContext.getContentResolver().query(
-                HistoryContract.HistoryEntry.CONTENT_URI,
-                null,
-                HistoryContract.HistoryEntry.COLUMN_IS_HISTORY + " = ?",
-                new String[]{"1"},
-                HistoryContract.HistoryEntry.COLUMN_INSERT_DATE + " DESC LIMIT " + MAX_HISTORY
-        );
-    }
-
     private void refreshAdapterCursor() {
-        Cursor historyCursor = getHistoryCursor();
+        Cursor historyCursor = mHistorySource.getHistoryCursor();
         mAdapter.changeCursor(historyCursor);
-    }
-
-    public synchronized void clearHistory() {
-        mContext.getContentResolver().delete(
-                HistoryContract.HistoryEntry.CONTENT_URI,
-                HistoryContract.HistoryEntry.COLUMN_IS_HISTORY + " = ?",
-                new String[]{"1"}
-        );
-    }
-
-    public synchronized void clearAll() {
-        mContext.getContentResolver().delete(
-                HistoryContract.HistoryEntry.CONTENT_URI,
-                null,
-                null
-        );
     }
 
     @Override
     public Cursor runQuery(CharSequence constraint) {
-        String filter = constraint.toString();
-        if (filter.isEmpty()) {
-            return getHistoryCursor();
-        } else {
-            return mContext.getContentResolver().query(
-                    HistoryContract.HistoryEntry.CONTENT_URI,
-                    null,
-                    HistoryContract.HistoryEntry.COLUMN_QUERY + " LIKE ?",
-                    new String[]{"%" + filter + "%"},
-                    HistoryContract.HistoryEntry.COLUMN_IS_HISTORY + " DESC, " +
-                            HistoryContract.HistoryEntry.COLUMN_QUERY
-            );
-        }
+        return mHistorySource.runQuery(constraint);
     }
 
     @Override
@@ -856,42 +792,4 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
     }
     //endregion
 
-    //region Interfaces
-
-    /**
-     * Interface that handles the submission and change of search queries.
-     */
-    public interface OnQueryTextListener {
-        /**
-         * Called when a search query is submitted.
-         *
-         * @param query The text that will be searched.
-         * @return True when the query is handled by the listener, false to let the SearchView handle the default case.
-         */
-        boolean onQueryTextSubmit(String query);
-
-        /**
-         * Called when a search query is changed.
-         *
-         * @param newText The new text of the search query.
-         * @return True when the query is handled by the listener, false to let the SearchView handle the default case.
-         */
-        boolean onQueryTextChange(String newText);
-    }
-
-    /**
-     * Interface that handles the opening and closing of the SearchView.
-     */
-    public interface SearchViewListener {
-        /**
-         * Called when the searchview is opened.
-         */
-        void onSearchViewOpened();
-
-        /**
-         * Called when the search view closes.
-         */
-        void onSearchViewClosed();
-    }
-    //endregion
 }

@@ -9,27 +9,25 @@ import android.arch.paging.PagedList
 import com.tretton37.twitter37.data.tweets.TweetsDataSource
 import com.tretton37.twitter37.data.tweets.TweetsDataSourceFactory
 import com.tretton37.twitter37.data.webservice.NetworkState
-import com.tretton37.twitter37.utils.AppConstants.Companion.EXECUTOR_THREADS
+import com.tretton37.twitter37.utils.AppConstants.Companion.EMPTY
 import com.tretton37.twitter37.utils.AppConstants.Companion.PAGE_SIZE
 import com.twitter.sdk.android.core.models.Tweet
 import com.twitter.sdk.android.core.services.SearchService
 import com.twitter.sdk.android.core.services.StatusesService
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import javax.inject.Inject
 
-class TweetsViewModel @Inject constructor(private val statusService: StatusesService, private val searchService: SearchService) : ViewModel() {
-
-    private val executor: ExecutorService = Executors.newFixedThreadPool(EXECUTOR_THREADS)
-
+class TweetsViewModel @Inject constructor(private val statusService: StatusesService,
+                                          private val searchService: SearchService,
+                                          private val executor: ExecutorService) : ViewModel() {
     val tweetsList: LiveData<PagedList<Tweet>>
     val queryLiveData: MutableLiveData<String> = MutableLiveData()
-    private val tweetsDataSourceFactoryLiveData: LiveData<TweetsDataSourceFactory>
-    private val tweetsDataSourceLiveData: LiveData<TweetsDataSource>
+    val tweetsDataSourceFactoryLiveData: LiveData<TweetsDataSourceFactory>
+    val tweetsDataSourceLiveData: LiveData<TweetsDataSource>
     val networkState: LiveData<NetworkState>
 
     init {
-        queryLiveData.value = ""
+        queryLiveData.value = EMPTY
 
         tweetsDataSourceFactoryLiveData = Transformations.switchMap(queryLiveData) {
             val localDataSourceFactoryLiveData = MutableLiveData<TweetsDataSourceFactory>()
@@ -55,5 +53,4 @@ class TweetsViewModel @Inject constructor(private val statusService: StatusesSer
         val currentQuery = queryLiveData.value
         queryLiveData.value = currentQuery
     }
-
 }

@@ -1,5 +1,7 @@
 package com.tretton37.twitter37.utils
 
+import com.tretton37.twitter37.utils.AppConstants.Companion.ZERO
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -12,9 +14,14 @@ object DateUtils {
     private const val dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
 
     fun formatDateString(dateValue: String): String {
-        val date = SimpleDateFormat(dateFormat, Locale.getDefault()).parse(dateValue)
-        val now = Date()
-        val diff = now.time - date.time
+        var diff = ZERO.toLong()
+        try {
+            val date = SimpleDateFormat(dateFormat, Locale.getDefault()).parse(dateValue)
+            val now = Date()
+            diff = now.time - date.time
+        } catch (e: ParseException) {
+            System.err.print(e)
+        }
 
         if (diff < MINUTE_MILLIS) {
             return "just now";
@@ -35,4 +42,6 @@ object DateUtils {
             return div.toString() + " days ago";
         }
     }
+
+
 }

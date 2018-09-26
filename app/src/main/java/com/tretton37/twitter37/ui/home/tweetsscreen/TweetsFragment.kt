@@ -49,20 +49,6 @@ class TweetsFragment : Fragment(), ListItemClickListener {
         initBinding(view)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        initViews()
-    }
-
-    private fun initViews() {
-        val binding = view?.let { DataBindingUtil.bind<FragmentTweetsBinding>(it) }
-
-        val searchAdapter = TweetsAdapter(this)
-        binding?.rvTweets?.swapAdapter(searchAdapter, true)
-        viewModel.tweetsList.observe(this, Observer<PagedList<Tweet>> { searchAdapter.submitList(it) })
-        viewModel.networkState.observe(this, Observer<NetworkState> { searchAdapter.setNetworkState(it) })
-    }
-
     private fun initBinding(view: View) {
         val binding = DataBindingUtil.bind<FragmentTweetsBinding>(view)
         binding.let {
@@ -79,6 +65,10 @@ class TweetsFragment : Fragment(), ListItemClickListener {
             viewModel.refreshLoadedData()
             binding.srlTweets.isRefreshing = false
         }
+        val searchAdapter = TweetsAdapter(this)
+        binding?.rvTweets?.swapAdapter(searchAdapter, true)
+        viewModel.tweetsList.observe(this, Observer<PagedList<Tweet>> { searchAdapter.submitList(it) })
+        viewModel.networkState.observe(this, Observer<NetworkState> { searchAdapter.setNetworkState(it) })
     }
 
     fun updateSearchQuery(query: String) {

@@ -18,5 +18,7 @@ class AppConstants {
         const val SEARCH_RESULT_TYPE = "popular"//or mixed
         const val PAGE_SIZE = 10
 
+        const val MAX_HISTORY = 10
+
     }
 }

@@ -49,7 +49,6 @@ public final class HistoryProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-
         final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
         Cursor rCursor;
 

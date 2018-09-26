@@ -11,12 +11,14 @@ import com.tretton37.twitter37.R
 import com.tretton37.twitter37.databinding.ActivityHomeBinding
 import com.tretton37.twitter37.ui.common.base.BaseActivity
 import com.tretton37.twitter37.ui.home.tweetsscreen.TweetsFragment
+import com.tretton37.twitter37.ui.home.tweetsscreen.customsearchview.SuggestionsSearchView
+import com.tretton37.twitter37.ui.home.tweetsscreen.customsearchview.listeners.OnSuggestionsQueryTextListener
+import com.tretton37.twitter37.ui.home.tweetsscreen.customsearchview.listeners.SuggestionsSearchViewListener
 import com.tretton37.twitter37.utils.ext.findFragmentByTag
 import com.tretton37.twitter37.utils.ext.replaceFragment
-import com.tretton37.twitter37.utils.ui.customsearchview.SuggestionsSearchView
 
-class HomeActivity : BaseActivity(), SuggestionsSearchView.OnQueryTextListener,
-        SuggestionsSearchView.SearchViewListener, AdapterView.OnItemClickListener {
+class HomeActivity : BaseActivity(), OnSuggestionsQueryTextListener,
+        SuggestionsSearchViewListener, AdapterView.OnItemClickListener {
 
     companion object {
         val TAG = HomeActivity::class.java.getSimpleName()
