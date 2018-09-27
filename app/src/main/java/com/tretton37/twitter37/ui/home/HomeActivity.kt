@@ -17,6 +17,7 @@ import com.tretton37.twitter37.ui.home.tweetsscreen.customsearchview.listeners.S
 import com.tretton37.twitter37.utils.ext.findFragmentByTag
 import com.tretton37.twitter37.utils.ext.replaceFragment
 
+
 class HomeActivity : BaseActivity(), OnSuggestionsQueryTextListener,
         SuggestionsSearchViewListener, AdapterView.OnItemClickListener {
 

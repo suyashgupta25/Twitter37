@@ -336,10 +336,6 @@ public class SuggestionsSearchView extends FrameLayout implements FilterQueryPro
      * @param view The view to attach the keyboard to.
      */
     private void showKeyboard(View view) {
-        if (view.hasFocus()) {
-            view.clearFocus();
-        }
-
         view.requestFocus();
 
         if (!isHardKeyboardAvailable()) {

@@ -57,6 +57,9 @@ ext {
     junitVersion = '4.12'
     coretesting = '1.1.1'
     espressoVersion = '3.0.2'
+    testrunner_version = '1.0.2'
+    espressoIdling = '3.0.2'
+    orchestrator = '1.0.2'
 }
 
 

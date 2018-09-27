@@ -10,6 +10,7 @@ import com.tretton37.twitter37.data.tweets.TweetsDataSourceFactory
 import com.tretton37.twitter37.di.NetworkModule
 import com.twitter.sdk.android.core.services.SearchService
 import com.twitter.sdk.android.core.services.StatusesService
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,8 +29,8 @@ open class TweetsViewModelTest {
     var searchService: SearchService = mock()
     var baseApp: BaseApp = mock()
 
-    lateinit var executor: ExecutorService
-    lateinit var tweetsViewModel: TweetsViewModel
+    var executor: ExecutorService? = null
+    var tweetsViewModel: TweetsViewModel? = null
 
     var observer: Observer<TweetsDataSourceFactory> = mock()
 
@@ -44,9 +45,15 @@ open class TweetsViewModelTest {
 
     @Test
     fun testViewModelInit() {
-        tweetsViewModel = TweetsViewModel(statusesService, searchService, executor)
-        tweetsViewModel.tweetsDataSourceFactoryLiveData.observeForever(observer)
-        tweetsViewModel.refreshLoadedData()
+        tweetsViewModel = TweetsViewModel(statusesService, searchService, executor!!)
+        tweetsViewModel?.tweetsDataSourceFactoryLiveData?.observeForever(observer)
+        tweetsViewModel?.refreshLoadedData()
         verify(observer, times(2)).onChanged(any())
+    }
+
+    @After
+    fun releaseDependencies() {
+        executor = null
+        tweetsViewModel = null
     }
 }

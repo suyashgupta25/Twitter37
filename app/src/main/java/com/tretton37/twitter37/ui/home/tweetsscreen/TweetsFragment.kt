@@ -21,6 +21,7 @@ import com.twitter.sdk.android.core.models.Tweet
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
+
 class TweetsFragment : Fragment(), ListItemClickListener {
 
     @Inject
@@ -42,7 +43,6 @@ class TweetsFragment : Fragment(), ListItemClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_tweets, container, false)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,8 +66,10 @@ class TweetsFragment : Fragment(), ListItemClickListener {
             binding.srlTweets.isRefreshing = false
         }
         val searchAdapter = TweetsAdapter(this)
-        binding?.rvTweets?.swapAdapter(searchAdapter, true)
-        viewModel.tweetsList.observe(this, Observer<PagedList<Tweet>> { searchAdapter.submitList(it) })
+        binding.rvTweets.swapAdapter(searchAdapter, true)
+        viewModel.tweetsList.observe(this, Observer<PagedList<Tweet>> {
+            searchAdapter.submitList(it)
+        })
         viewModel.networkState.observe(this, Observer<NetworkState> { searchAdapter.setNetworkState(it) })
     }
 

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.tretton37.twitter37.utils.ui.zoomableimageview.ZoomableImageView
+        <com.tretton37.twitter37.ui.common.zoomableimageview.ZoomableImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
