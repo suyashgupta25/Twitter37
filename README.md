@@ -3,7 +3,7 @@
 This project consumes twitter APIs and displays latest tweets for screen name tretton37.
 
 ## Architecture
-Project is written in Kotlin and uses MVVM design pattern with android architectural components. The latest android arch paging library is used to achieve the desired tweets list on home page. Android studio v3.1.4 used for development.
+Project is written in Kotlin and uses MVVM design pattern with android architectural components. The latest android arch paging library is used to achieve the desired tweets list on home page. Android studio v3.2 used for development.
 
 ## Libraries
 ### app:
